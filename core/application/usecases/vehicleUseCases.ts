@@ -1,0 +1,26 @@
+import { IVehicleRepository } from "@/core/domain/interfaces/IVehicleRepository";
+import { Vehicle } from "@/core/domain/entities/vehicle";
+
+export class GetVehiclesUseCase {
+  constructor(private vehicleRepository: IVehicleRepository) {}
+
+  async execute(params: {
+    page?: number;
+    limit?: number;
+    manufacturer?: string;
+    type?: string;
+    year?: number;
+    sortBy?: "price" | "year";
+    sortOrder?: "asc" | "desc";
+  }): Promise<{ vehicles: Vehicle[]; total: number }> {
+    return this.vehicleRepository.getVehicles(params);
+  }
+}
+
+export class GetVehicleByIdUseCase {
+  constructor(private vehicleRepository: IVehicleRepository) {}
+
+  async execute(id: string): Promise<Vehicle | null> {
+    return this.vehicleRepository.getVehicleById(id);
+  }
+}
