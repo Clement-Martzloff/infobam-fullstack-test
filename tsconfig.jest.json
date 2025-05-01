@@ -1,9 +1,16 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noEmit": true,
-    "jsx": "react-jsx"
-  }
+    "module": "commonjs", // Jest requires commonjs for module
+    "moduleResolution": "node", // Ensures Jest resolves modules as Node would
+    "noEmit": true, // Prevents emitting files, useful for Jest only
+    "jsx": "react-jsx" // Ensure JSX works properly if you're using it in tests
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "core/**/*.ts",
+    "infrastructure/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
 }

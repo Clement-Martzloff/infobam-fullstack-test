@@ -1,5 +1,5 @@
-import { IVehicleRepository } from "@/core/domain/interfaces/IVehicleRepository";
 import { Vehicle } from "@/core/domain/entities/vehicle";
+import { IVehicleRepository } from "@/core/domain/interfaces/IVehicleRepository";
 
 export class GetVehiclesUseCase {
   constructor(private vehicleRepository: IVehicleRepository) {}
