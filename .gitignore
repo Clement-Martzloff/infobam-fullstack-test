@@ -43,3 +43,6 @@ next-env.d.ts
 # Cline's Memory and Rules
 memory-bank/
 .clinerules/
+
+# Context7 image
+dockerfile

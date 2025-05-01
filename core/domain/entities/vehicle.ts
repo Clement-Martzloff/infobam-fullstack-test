@@ -22,6 +22,7 @@ export enum VehicleType {
   SPORTS = "SPORTS",
   LUXURY = "LUXURY",
   ELECTRIC = "ELECTRIC",
+  HATCHBACK = "HATCHBACK",
 }
 
 export enum FuelType {

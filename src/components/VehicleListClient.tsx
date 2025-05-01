@@ -3,6 +3,7 @@
 
 import { Vehicle } from "@/core/domain/entities/vehicle";
 import { getVehicles } from "@/infrastructure/framework/nextjs/vehicleServerFunctions";
+import { useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
 
 interface VehicleListClientProps {
@@ -17,8 +18,17 @@ export default function VehicleListClient({
   const [vehicles, setVehicles] = useState<Vehicle[]>(initialVehicles);
   const [total, setTotal] = useState<number>(initialTotal);
   const [loading, setLoading] = useState<boolean>(false);
-  const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(10);
+
+  // Use nuqs for pagination state
+  const [page, setPage] = useQueryState("page", {
+    defaultValue: 1,
+    parse: (value) => parseInt(value) || 1,
+  });
+  const [limit, setLimit] = useQueryState("limit", {
+    defaultValue: 5,
+    parse: (value) => parseInt(value) || 5,
+  });
+
   const [manufacturer, setManufacturer] = useState<string>("");
   const [type, setType] = useState<string>("");
   const [year, setYear] = useState<number | undefined>(undefined);
@@ -49,22 +59,25 @@ export default function VehicleListClient({
       setLoading(false);
     };
 
-    // Only fetch if parameters change (excluding initial load handled by Server Component)
-    // This useEffect will handle subsequent fetches based on filter/sort/pagination changes
-    if (
-      page !== 1 ||
-      manufacturer ||
-      type ||
-      year !== undefined ||
-      sortBy ||
-      sortOrder
-    ) {
-      fetchVehicles();
-    }
-  }, [page, limit, manufacturer, type, year, sortBy, sortOrder]); // Dependencies
+    // Fetch whenever pagination, filter, or sort parameters change
+    fetchVehicles();
+  }, [page, limit, manufacturer, type, year, sortBy, sortOrder]); // Dependencies now include nuqs state
 
-  // TODO: Implement pagination controls, filter dropdowns, and sort options
-  // TODO: Add handlers for changing page, limit, filters, and sort
+  const handlePreviousPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    const totalPages = Math.ceil(total / limit);
+    if (page < totalPages) {
+      setPage(page + 1);
+    }
+  };
+
+  // TODO: Implement filter dropdowns, and sort options
+  // TODO: Add handlers for changing limit, filters, and sort
 
   return (
     <div className="container mx-auto p-4">
@@ -91,9 +104,27 @@ export default function VehicleListClient({
         </div>
       )}
 
-      {/* TODO: Add Pagination Controls */}
-      <div className="mt-4">
-        {/* Pagination controls will go here */}
+      {/* Pagination Controls */}
+      <div className="mt-4 flex items-center justify-between">
+        <button
+          onClick={handlePreviousPage}
+          disabled={page <= 1 || loading}
+          className="rounded bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
+        >
+          Previous
+        </button>
+        <span>
+          Page {page} of {Math.ceil(total / limit)}
+        </span>
+        <button
+          onClick={handleNextPage}
+          disabled={page >= Math.ceil(total / limit) || loading}
+          className="rounded bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
+        >
+          Next
+        </button>
+      </div>
+      <div className="mt-2">
         <p>Total vehicles: {total}</p>
       </div>
     </div>
