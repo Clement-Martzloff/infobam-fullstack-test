@@ -1,26 +1,35 @@
-"use server";
-
 import {
   GetVehicleByIdUseCase,
   GetVehiclesUseCase,
 } from "@/core/application/usecases/vehicleUseCases";
 import { MockVehicleRepository } from "@/infrastructure/repositories/MockVehicleRepository";
+import "server-only";
 
 const vehicleRepository = new MockVehicleRepository();
 const getVehiclesUseCase = new GetVehiclesUseCase(vehicleRepository);
 const getVehicleByIdUseCase = new GetVehicleByIdUseCase(vehicleRepository);
 
 export async function getVehicles(params: {
-  page?: number;
-  limit?: number;
-  manufacturer?: string;
-  type?: string;
-  year?: number;
-  sortBy?: "price" | "year";
-  sortOrder?: "asc" | "desc";
+  page?: number | null;
+  limit?: number | null;
+  manufacturer?: string | null;
+  type?: string | null;
+  year?: number | null;
+  sortBy?: "price" | "year" | null;
+  sortOrder?: "asc" | "desc" | null;
 }) {
   try {
-    const result = await getVehiclesUseCase.execute(params);
+    // Convert nulls to undefined for the use case if it expects undefined
+    const cleanedParams = {
+      page: params.page ?? undefined,
+      limit: params.limit ?? undefined,
+      manufacturer: params.manufacturer ?? undefined,
+      type: params.type ?? undefined,
+      year: params.year ?? undefined,
+      sortBy: params.sortBy ?? undefined,
+      sortOrder: params.sortOrder ?? undefined,
+    };
+    const result = await getVehiclesUseCase.execute(cleanedParams);
     return { data: result, error: null };
   } catch (error: unknown) {
     console.error("Error fetching vehicles:", error);

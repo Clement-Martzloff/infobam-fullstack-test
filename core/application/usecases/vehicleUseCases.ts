@@ -1,5 +1,5 @@
-import { IVehicleRepository } from "@/core/domain/interfaces/IVehicleRepository";
 import { Vehicle } from "@/core/domain/entities/vehicle";
+import { IVehicleRepository } from "@/core/domain/interfaces/IVehicleRepository";
 
 export class GetVehiclesUseCase {
   constructor(private vehicleRepository: IVehicleRepository) {}
@@ -13,6 +13,7 @@ export class GetVehiclesUseCase {
     sortBy?: "price" | "year";
     sortOrder?: "asc" | "desc";
   }): Promise<{ vehicles: Vehicle[]; total: number }> {
+    console.log(params);
     return this.vehicleRepository.getVehicles(params);
   }
 }

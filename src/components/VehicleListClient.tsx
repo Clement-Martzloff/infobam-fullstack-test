@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { Vehicle } from "@/core/domain/entities/vehicle";
-import { useQueryState } from "nuqs";
+import { usePaginationQuery } from "@/src/app/hooks/usePaginationQuery";
 
 interface VehicleListClientProps {
   vehicles: Vehicle[];
@@ -13,45 +12,7 @@ export default function VehicleListClient({
   vehicles,
   total,
 }: VehicleListClientProps) {
-  const [page, setPage] = useQueryState<number>("page", {
-    defaultValue: 1,
-    parse: (value) => parseInt(value) || 1,
-  });
-  const [limit, setLimit] = useQueryState<number>("limit", {
-    defaultValue: 5,
-    parse: (value) => parseInt(value) || 5,
-  });
-  const [manufacturer, setManufacturer] = useQueryState<string | null>(
-    "manufacturer",
-    {
-      defaultValue: null,
-      parse: (value) => (value === "" ? null : value),
-      serialize: (value) => (value === null ? "" : value),
-    },
-  );
-  const [type, setType] = useQueryState<string | null>("type", {
-    defaultValue: null,
-    parse: (value) => (value === "" ? null : value),
-    serialize: (value) => (value === null ? "" : value),
-  });
-  const [year, setYear] = useQueryState<number | null>("year", {
-    defaultValue: null,
-    parse: (value) => (value ? parseInt(value, 10) : null),
-    serialize: (value) => (value === null ? "" : String(value)),
-  });
-  const [sortBy, setSortBy] = useQueryState<"price" | "year" | null>("sortBy", {
-    defaultValue: null,
-    parse: (value) => (value === "price" || value === "year" ? value : null),
-    serialize: (value) => (value === null ? "" : value),
-  });
-  const [sortOrder, setSortOrder] = useQueryState<"asc" | "desc" | null>(
-    "sortOrder",
-    {
-      defaultValue: null,
-      parse: (value) => (value === "asc" || value === "desc" ? value : null),
-      serialize: (value) => (value === null ? "" : value),
-    },
-  );
+  const { page, setPage, limit } = usePaginationQuery();
 
   const handlePreviousPage = () => {
     if (page > 1) {

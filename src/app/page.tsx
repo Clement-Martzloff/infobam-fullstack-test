@@ -1,23 +1,21 @@
+import { vehicleSearchParamsLoader } from "@/infrastructure/framework/nextjs/vehicleSearchParamsLoader";
 import VehicleListServer from "@/src/components/VehicleListServer";
+import type { SearchParams } from "nuqs/server";
 import { Suspense } from "react";
 
 export default async function HomePage({
   searchParams,
 }: {
-  searchParams: {
-    page?: string;
-    limit?: string;
-    manufacturer?: string;
-    type?: string;
-    year?: string;
-    sortBy?: string;
-    sortOrder?: string;
-  };
+  searchParams: Promise<SearchParams>;
 }) {
+  // console.log("searchParams: ", await searchParams);
+  const parsedSearchParams = vehicleSearchParamsLoader(await searchParams);
+  // console.log("parsedSearchParams: ", parsedSearchParams);
+
   return (
     <div>
       <Suspense fallback={<div>Loading vehicles...</div>}>
-        <VehicleListServer searchParams={searchParams} />
+        <VehicleListServer searchParams={parsedSearchParams} />
       </Suspense>
     </div>
   );
