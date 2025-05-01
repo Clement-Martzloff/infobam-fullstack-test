@@ -13,7 +13,6 @@ export class GetVehiclesUseCase {
     sortBy?: "price" | "year";
     sortOrder?: "asc" | "desc";
   }): Promise<{ vehicles: Vehicle[]; total: number }> {
-    console.log(params);
     return this.vehicleRepository.getVehicles(params);
   }
 }

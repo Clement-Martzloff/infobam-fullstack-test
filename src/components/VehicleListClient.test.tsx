@@ -2,28 +2,52 @@
  * @jest-environment jsdom
  */
 
+import { Vehicle, VehicleType } from "@/core/domain/entities/vehicle";
+import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom"; // Import jest-dom matchers
 import VehicleListClient from "./VehicleListClient";
-import { getVehicles } from "@/infrastructure/framework/nextjs/vehicleServerFunctions";
-import { Vehicle, VehicleType } from "@/core/domain/entities/vehicle"; // Import VehicleType
 
-// Mock the getVehicles server function
-jest.mock("@/infrastructure/framework/nextjs/vehicleServerFunctions", () => ({
-  getVehicles: jest.fn(),
+import { usePaginationQuery } from "@/src/app/hooks/usePaginationQuery";
+import VehicleListGrid from "./VehicleListGrid";
+import PaginationControls from "./PaginationControls";
+
+jest.mock("@/src/app/hooks/usePaginationQuery", () => ({
+  __esModule: true,
+  usePaginationQuery: jest.fn(),
 }));
 
-const mockGetVehicles = getVehicles as jest.Mock;
+// Mock the child components to test the integration in VehicleListClient
+jest.mock("./VehicleListGrid", () => ({
+  __esModule: true,
+  default: jest.fn(({ vehicles }) => (
+    <div data-testid="vehicle-list-grid">
+      {vehicles.map((v: Vehicle) => v.model).join(", ")}
+    </div>
+  )),
+}));
 
-const mockInitialVehicles: Vehicle[] = [
+jest.mock("./PaginationControls", () => ({
+  __esModule: true,
+  default: jest.fn(({ page, limit, total }) => (
+    <div data-testid="pagination-controls">
+      Page {page} of {Math.ceil(total / limit)}, Total: {total}
+    </div>
+  )),
+}));
+
+const mockUsePaginationQuery = usePaginationQuery as jest.Mock;
+
+const mockSetPage = jest.fn();
+
+const mockVehicles: Vehicle[] = [
   {
     id: "1",
     manufacturer: "Toyota",
     model: "Camry",
     year: 2020,
     price: 25000,
-    type: VehicleType.SEDAN, // Use enum value
-    fuelType: "Gasoline", // Added missing required properties
+    type: VehicleType.SEDAN,
+    fuelType: "Gasoline",
     transmission: "Automatic",
     features: ["AC", "Radio"],
     images: ["image1.jpg"],
@@ -34,15 +58,15 @@ const mockInitialVehicles: Vehicle[] = [
   {
     id: "2",
     manufacturer: "Honda",
-    model: "CR-V",
-    year: 2022,
-    price: 30000,
-    type: VehicleType.SUV, // Use enum value
-    fuelType: "Gasoline", // Added missing required properties
+    model: "Civic",
+    year: 2021,
+    price: 22000,
+    type: VehicleType.SEDAN,
+    fuelType: "Gasoline",
     transmission: "Automatic",
-    features: ["AC", "Sunroof"],
+    features: ["AC", "Bluetooth"],
     images: ["image2.jpg"],
-    description: "A spacious SUV",
+    description: "A popular compact car",
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -50,44 +74,50 @@ const mockInitialVehicles: Vehicle[] = [
 
 describe("VehicleListClient", () => {
   beforeEach(() => {
-    // Reset the mock before each test
-    mockGetVehicles.mockReset();
+    jest.clearAllMocks();
   });
 
-  it("should render initial vehicles", () => {
-    render(
-      <VehicleListClient
-        initialVehicles={mockInitialVehicles}
-        initialTotal={mockInitialVehicles.length}
-      />,
+  const renderComponent = (
+    page: number,
+    total: number = 20,
+    vehicles: Vehicle[] = mockVehicles,
+  ) => {
+    mockUsePaginationQuery.mockReturnValue({
+      page,
+      setPage: mockSetPage,
+      limit: 10,
+    });
+
+    render(<VehicleListClient vehicles={vehicles} total={total} />);
+  };
+
+  it("renders the main container and title", () => {
+    renderComponent(1);
+    expect(screen.getByText("Vehicle Listing")).toBeInTheDocument();
+    // Check for the presence of the mocked child components
+    expect(screen.getByTestId("vehicle-list-grid")).toBeInTheDocument();
+    expect(screen.getByTestId("pagination-controls")).toBeInTheDocument();
+  });
+
+  it("passes the correct vehicles prop to VehicleListGrid", () => {
+    renderComponent(1);
+    expect(VehicleListGrid).toHaveBeenCalledWith(
+      { vehicles: mockVehicles },
+      undefined,
     );
-
-    // Check if the component title is present
-    expect(
-      screen.getByRole("heading", { name: /Vehicle Listing/i }),
-    ).toBeInTheDocument();
-
-    // Check if initial vehicles are displayed
-    expect(screen.getByText("Toyota Camry")).toBeInTheDocument();
-    expect(screen.getByText("Year: 2020")).toBeInTheDocument();
-    expect(screen.getByText("Price: $25000")).toBeInTheDocument();
-    // Note: The component displays the enum value directly, which is "SEDAN" not "Sedan"
-    expect(screen.getByText(`Type: ${VehicleType.SEDAN}`)).toBeInTheDocument();
-
-    expect(screen.getByText("Honda CR-V")).toBeInTheDocument();
-    expect(screen.getByText("Year: 2022")).toBeInTheDocument();
-    expect(screen.getByText("Price: $30000")).toBeInTheDocument();
-    // Note: The component displays the enum value directly, which is "SUV" not "SUV"
-    expect(screen.getByText(`Type: ${VehicleType.SUV}`)).toBeInTheDocument();
-
-    // Check if total is displayed
-    expect(
-      screen.getByText(`Total vehicles: ${mockInitialVehicles.length}`),
-    ).toBeInTheDocument();
-
-    // Ensure getVehicles is not called on initial render (as per component logic)
-    expect(mockGetVehicles).not.toHaveBeenCalled();
   });
 
-  // Add more describe blocks for other test cases for this component
+  it("passes the correct pagination props to PaginationControls", () => {
+    const page = 2;
+    const total = 30;
+    renderComponent(page, total);
+    expect(PaginationControls).toHaveBeenCalledWith(
+      { page, limit: 10, total, setPage: mockSetPage },
+      undefined,
+    );
+  });
+
+  // The tests for button clicks and disabled states are now handled in PaginationControls.test.tsx
+  // The tests for rendering individual vehicle items are now handled in VehicleItem.test.tsx
+  // The tests for rendering the grid of items are now handled in VehicleListGrid.test.tsx
 });

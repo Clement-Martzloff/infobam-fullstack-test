@@ -10,7 +10,6 @@ interface VehicleListServerProps {
 export default async function VehicleListServer({
   searchParams,
 }: VehicleListServerProps) {
-  // console.log("searchParams: ", searchParams);
   const { pagination } = searchParams;
   const { data, error } = await getVehicles({ ...pagination });
 

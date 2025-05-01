@@ -8,9 +8,7 @@ export default async function HomePage({
 }: {
   searchParams: Promise<SearchParams>;
 }) {
-  // console.log("searchParams: ", await searchParams);
   const parsedSearchParams = vehicleSearchParamsLoader(await searchParams);
-  // console.log("parsedSearchParams: ", parsedSearchParams);
 
   return (
     <div>

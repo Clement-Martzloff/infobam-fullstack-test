@@ -4,7 +4,7 @@ import {
   parseAsStringLiteral,
 } from "nuqs/server";
 
-export const vehicleSearchParams = {
+export const vehicleSearchParamsParser = {
   page: parseAsInteger.withDefault(1),
   limit: parseAsInteger.withDefault(5),
   manufacturer: parseAsString,

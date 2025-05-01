@@ -10,9 +10,9 @@ const config: Config = {
   testMatch: ["**/?(*.)+(spec|test).[tj]s?(x)"],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/$1",
-    "^@src/(.*)$": "<rootDir>/src/$1",
-    "^@core/(.*)$": "<rootDir>/core/$1",
-    "^@infrastructure/(.*)$": "<rootDir>/infrastructure/$1",
+    "^@/src/(.*)$": "<rootDir>/src/$1",
+    "^@/core/(.*)$": "<rootDir>/core/$1",
+    "^@/infrastructure/(.*)$": "<rootDir>/infrastructure/$1",
   },
   clearMocks: true,
   collectCoverage: true,

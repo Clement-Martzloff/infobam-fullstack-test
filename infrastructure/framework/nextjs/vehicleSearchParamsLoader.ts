@@ -1,8 +1,8 @@
-import { vehicleSearchParams } from "@/infrastructure/framework/nextjs/vehicleSearchParams";
+import { vehicleSearchParamsParser } from "@/infrastructure/framework/nextjs/vehicleSearchParamsParser";
 import { createLoader, SearchParams } from "nuqs/server";
 import "server-only";
 
-const baseLoader = createLoader(vehicleSearchParams);
+const baseLoader = createLoader(vehicleSearchParamsParser);
 
 export const vehicleSearchParamsLoader = (searchParams: SearchParams) => {
   const parsed = baseLoader(searchParams);
