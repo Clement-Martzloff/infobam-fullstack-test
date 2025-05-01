@@ -2,66 +2,56 @@
 "use client";
 
 import { Vehicle } from "@/core/domain/entities/vehicle";
-import { getVehicles } from "@/infrastructure/framework/nextjs/vehicleServerFunctions";
 import { useQueryState } from "nuqs";
-import { useEffect, useState } from "react";
 
 interface VehicleListClientProps {
-  initialVehicles: Vehicle[];
-  initialTotal: number;
+  vehicles: Vehicle[];
+  total: number;
 }
 
 export default function VehicleListClient({
-  initialVehicles,
-  initialTotal,
+  vehicles,
+  total,
 }: VehicleListClientProps) {
-  const [vehicles, setVehicles] = useState<Vehicle[]>(initialVehicles);
-  const [total, setTotal] = useState<number>(initialTotal);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  // Use nuqs for pagination state
-  const [page, setPage] = useQueryState("page", {
+  const [page, setPage] = useQueryState<number>("page", {
     defaultValue: 1,
     parse: (value) => parseInt(value) || 1,
   });
-  const [limit, setLimit] = useQueryState("limit", {
+  const [limit, setLimit] = useQueryState<number>("limit", {
     defaultValue: 5,
     parse: (value) => parseInt(value) || 5,
   });
-
-  const [manufacturer, setManufacturer] = useState<string>("");
-  const [type, setType] = useState<string>("");
-  const [year, setYear] = useState<number | undefined>(undefined);
-  const [sortBy, setSortBy] = useState<"price" | "year" | undefined>(undefined);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc" | undefined>(
-    undefined,
+  const [manufacturer, setManufacturer] = useQueryState<string | null>(
+    "manufacturer",
+    {
+      defaultValue: null,
+      parse: (value) => (value === "" ? null : value),
+      serialize: (value) => (value === null ? "" : value),
+    },
   );
-
-  useEffect(() => {
-    const fetchVehicles = async () => {
-      setLoading(true);
-      const { data, error } = await getVehicles({
-        page,
-        limit,
-        manufacturer,
-        type,
-        year,
-        sortBy,
-        sortOrder,
-      });
-      if (data) {
-        setVehicles(data.vehicles);
-        setTotal(data.total);
-      } else if (error) {
-        console.error("Error fetching vehicles:", error);
-        // Handle error display to user
-      }
-      setLoading(false);
-    };
-
-    // Fetch whenever pagination, filter, or sort parameters change
-    fetchVehicles();
-  }, [page, limit, manufacturer, type, year, sortBy, sortOrder]); // Dependencies now include nuqs state
+  const [type, setType] = useQueryState<string | null>("type", {
+    defaultValue: null,
+    parse: (value) => (value === "" ? null : value),
+    serialize: (value) => (value === null ? "" : value),
+  });
+  const [year, setYear] = useQueryState<number | null>("year", {
+    defaultValue: null,
+    parse: (value) => (value ? parseInt(value, 10) : null),
+    serialize: (value) => (value === null ? "" : String(value)),
+  });
+  const [sortBy, setSortBy] = useQueryState<"price" | "year" | null>("sortBy", {
+    defaultValue: null,
+    parse: (value) => (value === "price" || value === "year" ? value : null),
+    serialize: (value) => (value === null ? "" : value),
+  });
+  const [sortOrder, setSortOrder] = useQueryState<"asc" | "desc" | null>(
+    "sortOrder",
+    {
+      defaultValue: null,
+      parse: (value) => (value === "asc" || value === "desc" ? value : null),
+      serialize: (value) => (value === null ? "" : value),
+    },
+  );
 
   const handlePreviousPage = () => {
     if (page > 1) {
@@ -76,39 +66,27 @@ export default function VehicleListClient({
     }
   };
 
-  // TODO: Implement filter dropdowns, and sort options
-  // TODO: Add handlers for changing limit, filters, and sort
-
   return (
     <div className="container mx-auto p-4">
       <h1 className="mb-4 text-2xl font-bold">Vehicle Listing</h1>
-
-      {/* TODO: Add Filter and Sort Controls */}
       <div className="mb-4">{/* Filter and Sort controls will go here */}</div>
-
-      {loading ? (
-        <div>Loading...</div>
-      ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {vehicles.map((vehicle: Vehicle) => (
-            <div key={vehicle.id} className="rounded border p-4 shadow">
-              <h2 className="text-xl font-semibold">
-                {vehicle.manufacturer} {vehicle.model}
-              </h2>
-              <p>Year: {vehicle.year}</p>
-              <p>Price: ${vehicle.price}</p>
-              <p>Type: {vehicle.type}</p>
-              {/* TODO: Add link to detail page */}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Pagination Controls */}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {vehicles.map((vehicle: Vehicle) => (
+          <div key={vehicle.id} className="rounded border p-4 shadow">
+            <h2 className="text-xl font-semibold">
+              {vehicle.manufacturer} {vehicle.model}
+            </h2>
+            <p>Year: {vehicle.year}</p>
+            <p>Price: ${vehicle.price}</p>
+            <p>Type: {vehicle.type}</p>
+            {/* TODO: Add link to detail page */}
+          </div>
+        ))}
+      </div>
       <div className="mt-4 flex items-center justify-between">
         <button
           onClick={handlePreviousPage}
-          disabled={page <= 1 || loading}
+          disabled={page <= 1}
           className="rounded bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
         >
           Previous
@@ -118,7 +96,7 @@ export default function VehicleListClient({
         </span>
         <button
           onClick={handleNextPage}
-          disabled={page >= Math.ceil(total / limit) || loading}
+          disabled={page >= Math.ceil(total / limit)}
           className="rounded bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
         >
           Next

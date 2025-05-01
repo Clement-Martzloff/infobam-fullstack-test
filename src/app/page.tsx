@@ -1,20 +1,24 @@
-import { getVehicles } from "@/infrastructure/framework/nextjs/vehicleServerFunctions";
-import VehicleListClient from "@/src/components/VehicleListClient";
+import VehicleListServer from "@/src/components/VehicleListServer";
+import { Suspense } from "react";
 
-export default async function HomePage() {
-  const { data, error } = await getVehicles({});
-
-  if (error) {
-    return <div>Error loading vehicles: {error}</div>;
-  }
-
-  const initialVehicles = data?.vehicles || [];
-  const initialTotal = data?.total || 0;
-
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: {
+    page?: string;
+    limit?: string;
+    manufacturer?: string;
+    type?: string;
+    year?: string;
+    sortBy?: string;
+    sortOrder?: string;
+  };
+}) {
   return (
-    <VehicleListClient
-      initialVehicles={initialVehicles}
-      initialTotal={initialTotal}
-    />
+    <div>
+      <Suspense fallback={<div>Loading vehicles...</div>}>
+        <VehicleListServer searchParams={searchParams} />
+      </Suspense>
+    </div>
   );
 }
