@@ -17,6 +17,22 @@ export class GetVehiclesUseCase {
   }
 }
 
+export class GetFilteredUniqueFilterValuesUseCase {
+  constructor(private vehicleRepository: IVehicleRepository) {}
+
+  async execute(params: {
+    manufacturer?: string;
+    type?: string;
+    year?: number;
+  }): Promise<{
+    manufacturer: string[];
+    type: string[];
+    year: number[];
+  }> {
+    return this.vehicleRepository.getUniqueFilterValues(params);
+  }
+}
+
 export class GetVehicleByIdUseCase {
   constructor(private vehicleRepository: IVehicleRepository) {}
 

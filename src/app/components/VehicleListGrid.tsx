@@ -1,5 +1,5 @@
 import { Vehicle } from "@/core/domain/entities/vehicle";
-import VehicleItem from "@/src/components/VehicleItem";
+import VehicleItem from "@/src/app/components/VehicleItem";
 
 interface VehicleListGridProps {
   vehicles: Vehicle[];

@@ -11,4 +11,13 @@ export interface IVehicleRepository {
     sortOrder?: "asc" | "desc";
   }): Promise<{ vehicles: Vehicle[]; total: number }>;
   getVehicleById(id: string): Promise<Vehicle | null>;
+  getUniqueFilterValues(params?: {
+    manufacturer?: string;
+    type?: string;
+    year?: number;
+  }): Promise<{
+    manufacturer: string[];
+    type: string[];
+    year: number[];
+  }>;
 }

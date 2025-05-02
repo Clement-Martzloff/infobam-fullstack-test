@@ -1,5 +1,5 @@
 import { vehicleSearchParamsLoader } from "@/infrastructure/framework/nextjs/vehicleSearchParamsLoader";
-import VehicleListServer from "@/src/components/VehicleListServer";
+import VehicleListServer from "@/src/app/components/VehicleListServer";
 import type { SearchParams } from "nuqs/server";
 import { Suspense } from "react";
 

@@ -19,17 +19,17 @@ export class MockVehicleRepository implements IVehicleRepository {
       filteredVehicles = filteredVehicles.filter((vehicle) =>
         vehicle.manufacturer
           .toLowerCase()
-          .includes(params.manufacturer!.toLowerCase())
+          .includes(params.manufacturer!.toLowerCase()),
       );
     }
     if (params.type) {
       filteredVehicles = filteredVehicles.filter(
-        (vehicle) => vehicle.type.toLowerCase() === params.type!.toLowerCase()
+        (vehicle) => vehicle.type.toLowerCase() === params.type!.toLowerCase(),
       );
     }
     if (params.year) {
       filteredVehicles = filteredVehicles.filter(
-        (vehicle) => vehicle.year === params.year
+        (vehicle) => vehicle.year === params.year,
       );
     }
 
@@ -66,5 +66,51 @@ export class MockVehicleRepository implements IVehicleRepository {
   async getVehicleById(id: string): Promise<Vehicle | null> {
     const vehicle = mockVehicles.find((v) => v.id === id);
     return vehicle || null;
+  }
+
+  async getUniqueFilterValues(params?: {
+    manufacturer?: string;
+    type?: string;
+    year?: number;
+  }): Promise<{
+    manufacturer: string[];
+    type: string[];
+    year: number[];
+  }> {
+    let filteredVehicles = [...mockVehicles];
+
+    if (params?.manufacturer) {
+      filteredVehicles = filteredVehicles.filter((vehicle) =>
+        vehicle.manufacturer
+          .toLowerCase()
+          .includes(params.manufacturer!.toLowerCase()),
+      );
+    }
+    if (params?.type) {
+      filteredVehicles = filteredVehicles.filter(
+        (vehicle) => vehicle.type.toLowerCase() === params.type!.toLowerCase(),
+      );
+    }
+    if (params?.year) {
+      filteredVehicles = filteredVehicles.filter(
+        (vehicle) => vehicle.year === params.year,
+      );
+    }
+
+    const uniqueManufacturers = Array.from(
+      new Set(filteredVehicles.map((v) => v.manufacturer)),
+    );
+    const uniqueTypes = Array.from(
+      new Set(filteredVehicles.map((v) => v.type)),
+    );
+    const uniqueYears = Array.from(
+      new Set(filteredVehicles.map((v) => v.year)),
+    ).sort((a, b) => a - b);
+
+    return {
+      manufacturer: uniqueManufacturers,
+      type: uniqueTypes,
+      year: uniqueYears,
+    };
   }
 }

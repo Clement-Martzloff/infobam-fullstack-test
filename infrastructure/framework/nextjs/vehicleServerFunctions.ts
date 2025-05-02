@@ -1,6 +1,7 @@
 import {
   GetVehicleByIdUseCase,
   GetVehiclesUseCase,
+  GetFilteredUniqueFilterValuesUseCase,
 } from "@/core/application/usecases/vehicleUseCases";
 import { MockVehicleRepository } from "@/infrastructure/repositories/MockVehicleRepository";
 import "server-only";
@@ -8,6 +9,8 @@ import "server-only";
 const vehicleRepository = new MockVehicleRepository();
 const getVehiclesUseCase = new GetVehiclesUseCase(vehicleRepository);
 const getVehicleByIdUseCase = new GetVehicleByIdUseCase(vehicleRepository);
+const getFilteredUniqueFilterValuesUseCase =
+  new GetFilteredUniqueFilterValuesUseCase(vehicleRepository);
 
 export async function getVehicles(params: {
   page?: number | null;
@@ -34,6 +37,26 @@ export async function getVehicles(params: {
   } catch (error: unknown) {
     console.error("Error fetching vehicles:", error);
     // return { data: null, error: error.message || "Failed to fetch vehicles" };
+    return { data: null };
+  }
+}
+
+export async function getFilteredUniqueFilters(params: {
+  manufacturer?: string | null;
+  type?: string | null;
+  year?: number | null;
+}) {
+  try {
+    const cleanedParams = {
+      manufacturer: params.manufacturer ?? undefined,
+      type: params.type ?? undefined,
+      year: params.year ?? undefined,
+    };
+    const uniqueFilters =
+      await getFilteredUniqueFilterValuesUseCase.execute(cleanedParams);
+    return { data: uniqueFilters, error: null };
+  } catch (error: unknown) {
+    console.error("Error fetching filtered unique filters:", error);
     return { data: null };
   }
 }
