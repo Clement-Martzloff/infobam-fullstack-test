@@ -1,21 +1,25 @@
 import { IVehicleRepository } from "@/core/domain/interfaces/IVehicleRepository";
-import { GetVehiclesUseCase, GetVehicleByIdUseCase } from "./vehicleUseCases";
-import { Vehicle, VehicleType } from "@/core/domain/entities/vehicle"; // Import Vehicle and VehicleType
+import {
+  SearchVehiclesUseCase,
+  GetVehicleByIdUseCase,
+  GetVehicleCountUseCase,
+} from "./vehicleUseCases";
+import { Vehicle, VehicleType } from "@/core/domain/entities/vehicle";
 
 // Mock the repository
 const mockVehicleRepository: IVehicleRepository = {
-  getVehicles: jest.fn(),
+  searchVehicles: jest.fn(),
   getVehicleById: jest.fn(),
+  getVehicleCount: jest.fn(),
 };
 
-describe("GetVehiclesUseCase", () => {
+describe("SearchVehiclesUseCase", () => {
   beforeEach(() => {
-    // Reset the mock before each test
-    mockVehicleRepository.getVehicles = jest.fn();
+    jest.clearAllMocks();
   });
 
-  it("should call the repository's getVehicles method with correct parameters", async () => {
-    const useCase = new GetVehiclesUseCase(mockVehicleRepository);
+  it("should call the repository's searchVehicles method with correct parameters", async () => {
+    const useCase = new SearchVehiclesUseCase(mockVehicleRepository);
     const mockVehicles: Vehicle[] = [
       {
         id: "1",
@@ -33,41 +37,36 @@ describe("GetVehiclesUseCase", () => {
         updatedAt: new Date(),
       },
     ];
-    const mockTotal = 1;
-    const mockReturn = { vehicles: mockVehicles, total: mockTotal };
 
-    (mockVehicleRepository.getVehicles as jest.Mock).mockResolvedValue(
-      mockReturn,
+    (mockVehicleRepository.searchVehicles as jest.Mock).mockResolvedValue(
+      mockVehicles,
     );
 
     const params = { page: 1, limit: 10, manufacturer: "Toyota" };
     const result = await useCase.execute(params);
 
-    expect(mockVehicleRepository.getVehicles).toHaveBeenCalledWith(params);
-    expect(result).toEqual(mockReturn);
+    expect(mockVehicleRepository.searchVehicles).toHaveBeenCalledWith(params);
+    expect(result).toEqual(mockVehicles);
   });
 
-  it("should call the repository's getVehicles method with no parameters if none are provided", async () => {
-    const useCase = new GetVehiclesUseCase(mockVehicleRepository);
+  it("should call the repository's searchVehicles method with no parameters if none are provided", async () => {
+    const useCase = new SearchVehiclesUseCase(mockVehicleRepository);
     const mockVehicles: Vehicle[] = [];
-    const mockTotal = 0;
-    const mockReturn = { vehicles: mockVehicles, total: mockTotal };
 
-    (mockVehicleRepository.getVehicles as jest.Mock).mockResolvedValue(
-      mockReturn,
+    (mockVehicleRepository.searchVehicles as jest.Mock).mockResolvedValue(
+      mockVehicles,
     );
 
     const result = await useCase.execute({});
 
-    expect(mockVehicleRepository.getVehicles).toHaveBeenCalledWith({});
-    expect(result).toEqual(mockReturn);
+    expect(mockVehicleRepository.searchVehicles).toHaveBeenCalledWith({});
+    expect(result).toEqual(mockVehicles);
   });
 });
 
 describe("GetVehicleByIdUseCase", () => {
   beforeEach(() => {
-    // Reset the mock before each test
-    mockVehicleRepository.getVehicleById = jest.fn();
+    jest.clearAllMocks();
   });
 
   it("should call the repository's getVehicleById method with the correct ID", async () => {
@@ -109,5 +108,40 @@ describe("GetVehicleByIdUseCase", () => {
 
     expect(mockVehicleRepository.getVehicleById).toHaveBeenCalledWith(mockId);
     expect(result).toBeNull();
+  });
+});
+
+describe("GetVehicleCountUseCase", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("should call the repository's getVehicleCount method with correct parameters", async () => {
+    const useCase = new GetVehicleCountUseCase(mockVehicleRepository);
+    const mockCount = 10;
+
+    (mockVehicleRepository.getVehicleCount as jest.Mock).mockResolvedValue(
+      mockCount,
+    );
+
+    const params = { manufacturer: "Toyota", type: "SEDAN", year: 2020 };
+    const result = await useCase.execute(params);
+
+    expect(mockVehicleRepository.getVehicleCount).toHaveBeenCalledWith(params);
+    expect(result).toEqual(mockCount);
+  });
+
+  it("should call the repository's getVehicleCount method with no parameters if none are provided", async () => {
+    const useCase = new GetVehicleCountUseCase(mockVehicleRepository);
+    const mockCount = 0;
+
+    (mockVehicleRepository.getVehicleCount as jest.Mock).mockResolvedValue(
+      mockCount,
+    );
+
+    const result = await useCase.execute({});
+
+    expect(mockVehicleRepository.getVehicleCount).toHaveBeenCalledWith({});
+    expect(result).toEqual(mockCount);
   });
 });

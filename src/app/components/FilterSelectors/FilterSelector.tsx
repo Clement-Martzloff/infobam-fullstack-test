@@ -22,14 +22,18 @@ export default function FilterSelector({
   selectedValue,
   onValueChange,
 }: FilterSelectorProps) {
-  console.log("selectedValue", selectedValue);
+  // Determine the value to pass to the Select component.
+  // Use an empty string ('') when selectedValue is null to ensure the placeholder shows.
+  // Otherwise, convert the selectedValue to a string.
+  const selectValue = selectedValue === null ? "" : String(selectedValue);
 
   return (
     <div className="grid grid-cols-4 items-center gap-4">
       <Label htmlFor={filterName} className="text-right">
         {label}
       </Label>
-      <Select onValueChange={onValueChange}>
+      {/* Pass the calculated selectValue to the Select component */}
+      <Select value={selectValue} onValueChange={onValueChange}>
         <SelectTrigger id={filterName} className="col-span-3">
           <SelectValue placeholder={`Select a ${label.toLowerCase()}`} />
         </SelectTrigger>
