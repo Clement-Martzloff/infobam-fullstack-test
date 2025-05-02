@@ -1,17 +1,12 @@
 import { Vehicle } from "@/core/domain/entities/vehicle";
-import { IVehicleRepository } from "@/core/domain/interfaces/IVehicleRepository";
+import {
+  IVehicleRepository,
+  VehicleSearchParam,
+} from "@/core/domain/interfaces/IVehicleRepository";
 import { mockVehicles } from "@/infrastructure/data/mockVehicles";
 
 export class MockVehicleRepository implements IVehicleRepository {
-  async getVehicles(params: {
-    page?: number;
-    limit?: number;
-    manufacturer?: string;
-    type?: string;
-    year?: number;
-    sortBy?: "price" | "year";
-    sortOrder?: "asc" | "desc";
-  }): Promise<{ vehicles: Vehicle[]; total: number }> {
+  async searchVehicles(params: VehicleSearchParam): Promise<Vehicle[]> {
     let filteredVehicles = [...mockVehicles];
 
     // Filtering
@@ -19,17 +14,17 @@ export class MockVehicleRepository implements IVehicleRepository {
       filteredVehicles = filteredVehicles.filter((vehicle) =>
         vehicle.manufacturer
           .toLowerCase()
-          .includes(params.manufacturer!.toLowerCase())
+          .includes(params.manufacturer!.toLowerCase()),
       );
     }
     if (params.type) {
       filteredVehicles = filteredVehicles.filter(
-        (vehicle) => vehicle.type.toLowerCase() === params.type!.toLowerCase()
+        (vehicle) => vehicle.type.toLowerCase() === params.type!.toLowerCase(),
       );
     }
     if (params.year) {
       filteredVehicles = filteredVehicles.filter(
-        (vehicle) => vehicle.year === params.year
+        (vehicle) => vehicle.year === params.year,
       );
     }
 
@@ -57,14 +52,40 @@ export class MockVehicleRepository implements IVehicleRepository {
     const endIndex = startIndex + limit;
     const paginatedVehicles = filteredVehicles.slice(startIndex, endIndex);
 
-    return {
-      vehicles: paginatedVehicles,
-      total: filteredVehicles.length,
-    };
+    return paginatedVehicles;
   }
 
   async getVehicleById(id: string): Promise<Vehicle | null> {
     const vehicle = mockVehicles.find((v) => v.id === id);
     return vehicle || null;
+  }
+
+  async getVehicleCount(params: {
+    manufacturer?: string;
+    type?: string;
+    year?: number;
+  }): Promise<number> {
+    let filteredVehicles = [...mockVehicles];
+
+    // Filtering
+    if (params.manufacturer) {
+      filteredVehicles = filteredVehicles.filter((vehicle) =>
+        vehicle.manufacturer
+          .toLowerCase()
+          .includes(params.manufacturer!.toLowerCase()),
+      );
+    }
+    if (params.type) {
+      filteredVehicles = filteredVehicles.filter(
+        (vehicle) => vehicle.type.toLowerCase() === params.type!.toLowerCase(),
+      );
+    }
+    if (params.year) {
+      filteredVehicles = filteredVehicles.filter(
+        (vehicle) => vehicle.year === params.year,
+      );
+    }
+
+    return filteredVehicles.length;
   }
 }

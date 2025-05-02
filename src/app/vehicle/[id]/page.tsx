@@ -1,4 +1,4 @@
-import { getVehicleById } from "@/infrastructure/framework/nextjs/vehicleServerFunctions";
+import { getVehicleById } from "@/infrastructure/nextjs/vehicleServerFunctions";
 
 export default async function VehicleDetailPage({
   params,

@@ -1,15 +1,19 @@
 import {
   GetVehicleByIdUseCase,
-  GetVehiclesUseCase,
-} from "@/core/application/usecases/vehicleUseCases";
+  GetVehicleCountUseCase,
+  SearchVehiclesUseCase,
+} from "@/core/usecases/vehicleUseCases";
 import { MockVehicleRepository } from "@/infrastructure/repositories/MockVehicleRepository";
 import "server-only";
 
-const vehicleRepository = new MockVehicleRepository();
-const getVehiclesUseCase = new GetVehiclesUseCase(vehicleRepository);
-const getVehicleByIdUseCase = new GetVehicleByIdUseCase(vehicleRepository);
+const mockVehicleRepository = new MockVehicleRepository();
+const searchVehiclesUseCase = new SearchVehiclesUseCase(mockVehicleRepository);
+const getVehicleByIdUseCase = new GetVehicleByIdUseCase(mockVehicleRepository);
+const getVehicleCountUseCase = new GetVehicleCountUseCase(
+  mockVehicleRepository,
+);
 
-export async function getVehicles(params: {
+export async function searchVehicules(params: {
   page?: number | null;
   limit?: number | null;
   manufacturer?: string | null;
@@ -29,11 +33,10 @@ export async function getVehicles(params: {
       sortBy: params.sortBy ?? undefined,
       sortOrder: params.sortOrder ?? undefined,
     };
-    const result = await getVehiclesUseCase.execute(cleanedParams);
+    const result = await searchVehiclesUseCase.execute(cleanedParams);
     return { data: result, error: null };
   } catch (error: unknown) {
     console.error("Error fetching vehicles:", error);
-    // return { data: null, error: error.message || "Failed to fetch vehicles" };
     return { data: null };
   }
 }
@@ -46,7 +49,25 @@ export async function getVehicleById(id: string) {
     console.error(`Error fetching vehicle with ID ${id}:`, error);
     return {
       data: null,
-      // error: error.message || `Failed to fetch vehicle with ID ${id}`,
     };
+  }
+}
+
+export async function getVehicleCount(params: {
+  manufacturer?: string | null;
+  type?: string | null;
+  year?: number | null;
+}) {
+  try {
+    const cleanedParams = {
+      manufacturer: params.manufacturer ?? undefined,
+      type: params.type ?? undefined,
+      year: params.year ?? undefined,
+    };
+    const uniqueFilters = await getVehicleCountUseCase.execute(cleanedParams);
+    return { data: uniqueFilters, error: null };
+  } catch (error: unknown) {
+    console.error("Error getting vehicle count:", error);
+    return { data: null };
   }
 }

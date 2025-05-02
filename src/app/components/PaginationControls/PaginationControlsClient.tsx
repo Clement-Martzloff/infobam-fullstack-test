@@ -1,29 +1,32 @@
+"use client";
+
+import { usePaginationQuery } from "@/src/app/hooks/usePaginationQuery";
+
 interface PaginationControlsProps {
-  page: number;
-  limit: number;
   total: number;
-  setPage: (page: number) => void;
 }
 
-export default function PaginationControls({
-  page,
-  limit,
-  total,
-  setPage,
-}: PaginationControlsProps) {
+export default function PaginationControls({ total }: PaginationControlsProps) {
+  const { page, limit, setPage } = usePaginationQuery();
+
   const totalPages = Math.ceil(total / limit);
 
   const handlePreviousPage = () => {
-    if (page > 1) {
+    if (page && page > 1) {
       setPage(page - 1);
     }
   };
 
   const handleNextPage = () => {
-    if (page < totalPages) {
+    if (page && page < totalPages) {
       setPage(page + 1);
     }
   };
+
+  // Ensure page and limit are numbers before rendering
+  if (typeof page !== "number" || typeof limit !== "number") {
+    return null; // Or a loading state
+  }
 
   return (
     <>
