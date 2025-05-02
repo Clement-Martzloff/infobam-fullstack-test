@@ -1,23 +1,23 @@
 import { Vehicle } from "@/core/domain/entities/vehicle";
 
 export interface IVehicleRepository {
-  getVehicles(params: {
-    page?: number;
-    limit?: number;
-    manufacturer?: string;
-    type?: string;
-    year?: number;
-    sortBy?: "price" | "year";
-    sortOrder?: "asc" | "desc";
-  }): Promise<{ vehicles: Vehicle[]; total: number }>;
+  searchVehicles(params: VehicleSearchParam): Promise<Vehicle[]>;
   getVehicleById(id: string): Promise<Vehicle | null>;
-  getUniqueFilterValues(params?: {
-    manufacturer?: string;
-    type?: string;
-    year?: number;
-  }): Promise<{
-    manufacturer: string[];
-    type: string[];
-    year: number[];
-  }>;
+  getVehicleCount(params: VehicleCountParam): Promise<number>;
+}
+
+export interface VehicleSearchParam {
+  page?: number;
+  limit?: number;
+  manufacturer?: string;
+  type?: string;
+  year?: number;
+  sortBy?: "price" | "year";
+  sortOrder?: "asc" | "desc";
+}
+
+export interface VehicleCountParam {
+  manufacturer?: string;
+  type?: string;
+  year?: number;
 }

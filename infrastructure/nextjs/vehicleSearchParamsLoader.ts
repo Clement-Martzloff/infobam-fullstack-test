@@ -1,4 +1,4 @@
-import { vehicleSearchParamsParser } from "@/infrastructure/framework/nextjs/vehicleSearchParamsParser";
+import { vehicleSearchParamsParser } from "@/infrastructure/nextjs/vehicleSearchParamsParser";
 import { createLoader, SearchParams } from "nuqs/server";
 import "server-only";
 

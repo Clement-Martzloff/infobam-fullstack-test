@@ -1,4 +1,4 @@
-import { vehicleSearchParamsParser } from "@/infrastructure/framework/nextjs/vehicleSearchParamsParser";
+import { vehicleSearchParamsParser } from "@/infrastructure/nextjs/vehicleSearchParamsParser";
 import { useQueryState } from "nuqs";
 
 export function usePaginationQuery() {

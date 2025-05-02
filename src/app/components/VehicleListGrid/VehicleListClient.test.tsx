@@ -8,8 +8,8 @@ import { render, screen } from "@testing-library/react";
 import VehicleListClient from "./VehicleListClient";
 
 import { usePaginationQuery } from "@/src/app/hooks/usePaginationQuery";
-import VehicleListGrid from "./VehicleListGrid";
-import PaginationControls from "./PaginationControls";
+import PaginationControls from "./PaginationControls/PaginationControls";
+import VehicleListGrid from "./VehicleListGrid/VehicleListGridClient";
 
 jest.mock("@/src/app/hooks/usePaginationQuery", () => ({
   __esModule: true,

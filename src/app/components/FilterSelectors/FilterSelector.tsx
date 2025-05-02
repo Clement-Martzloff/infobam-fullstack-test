@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 
-interface FilterSelectProps {
+interface FilterSelectorProps {
   filterName: string;
   label: string;
   options: (string | number)[];
@@ -15,21 +15,21 @@ interface FilterSelectProps {
   onValueChange: (value: string) => void;
 }
 
-export default function FilterSelect({
+export default function FilterSelector({
   filterName,
   label,
   options,
   selectedValue,
   onValueChange,
-}: FilterSelectProps) {
-  const selectValue = selectedValue === null ? "" : String(selectedValue);
+}: FilterSelectorProps) {
+  console.log("selectedValue", selectedValue);
 
   return (
     <div className="grid grid-cols-4 items-center gap-4">
       <Label htmlFor={filterName} className="text-right">
         {label}
       </Label>
-      <Select value={selectValue} onValueChange={onValueChange}>
+      <Select onValueChange={onValueChange}>
         <SelectTrigger id={filterName} className="col-span-3">
           <SelectValue placeholder={`Select a ${label.toLowerCase()}`} />
         </SelectTrigger>

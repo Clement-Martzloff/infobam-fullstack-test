@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/infrastructure/framework/nextjs/lib/utils";
+import { cn } from "@/infrastructure/nextjs/lib/utils";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import * as React from "react";
 

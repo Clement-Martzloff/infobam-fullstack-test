@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/infrastructure/framework/nextjs/lib/utils";
+import { cn } from "@/infrastructure/nextjs/lib/utils";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import * as React from "react";

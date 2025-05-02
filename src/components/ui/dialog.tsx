@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/infrastructure/framework/nextjs/lib/utils";
+import { cn } from "@/infrastructure/nextjs/lib/utils";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { XIcon } from "lucide-react";
 import * as React from "react";

@@ -4,7 +4,7 @@
 
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import PaginationControls from "./PaginationControls";
+import PaginationControls from "./PaginationControls/PaginationControls";
 
 describe("PaginationControls", () => {
   const mockSetPage = jest.fn();
