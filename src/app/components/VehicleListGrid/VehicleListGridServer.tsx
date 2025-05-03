@@ -9,10 +9,11 @@ interface VehicleListServerProps {
 export default async function VehicleListGridServer({
   searchParams,
 }: VehicleListServerProps) {
-  const { filters, pagination } = searchParams;
+  const { filters, pagination, sorting } = searchParams;
   const { data: vehiclesData, error: vehiclesError } = await searchVehicules({
     ...pagination,
     ...filters,
+    ...sorting, // Include sorting parameters
   });
 
   if (vehiclesError) {
