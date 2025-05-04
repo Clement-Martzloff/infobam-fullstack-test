@@ -13,7 +13,7 @@ export default async function VehicleListGridServer({
   const { data: vehiclesData, error: vehiclesError } = await searchVehicules({
     ...pagination,
     ...filters,
-    ...sorting, // Include sorting parameters
+    ...sorting,
   });
 
   if (vehiclesError) {

@@ -8,24 +8,20 @@ interface PaginationControlsProps {
 
 export default function PaginationControls({ total }: PaginationControlsProps) {
   const { page, limit, setPage } = usePaginationQuery();
-
   const totalPages = Math.ceil(total / limit);
-
   const handlePreviousPage = () => {
     if (page && page > 1) {
       setPage(page - 1);
     }
   };
-
   const handleNextPage = () => {
     if (page && page < totalPages) {
       setPage(page + 1);
     }
   };
 
-  // Ensure page and limit are numbers before rendering
   if (typeof page !== "number" || typeof limit !== "number") {
-    return null; // Or a loading state
+    return null;
   }
 
   return (

@@ -2,6 +2,7 @@ import { Vehicle } from "@/core/domain/entities/vehicle";
 import {
   IVehicleRepository,
   VehicleSearchParam,
+  VehicleCountParam,
 } from "@/core/domain/interfaces/IVehicleRepository";
 import { mockVehicles } from "@/infrastructure/data/mockVehicles";
 
@@ -10,21 +11,19 @@ export class MockVehicleRepository implements IVehicleRepository {
     let filteredVehicles = [...mockVehicles];
 
     // Filtering
-    if (params.manufacturer) {
+    if (params.manufacturer && params.manufacturer.length > 0) {
       filteredVehicles = filteredVehicles.filter((vehicle) =>
-        vehicle.manufacturer
-          .toLowerCase()
-          .includes(params.manufacturer!.toLowerCase()),
+        params.manufacturer!.includes(vehicle.manufacturer),
       );
     }
-    if (params.type) {
-      filteredVehicles = filteredVehicles.filter(
-        (vehicle) => vehicle.type.toLowerCase() === params.type!.toLowerCase(),
+    if (params.type && params.type.length > 0) {
+      filteredVehicles = filteredVehicles.filter((vehicle) =>
+        params.type!.includes(vehicle.type),
       );
     }
-    if (params.year) {
-      filteredVehicles = filteredVehicles.filter(
-        (vehicle) => vehicle.year === params.year,
+    if (params.year && params.year.length > 0) {
+      filteredVehicles = filteredVehicles.filter((vehicle) =>
+        params.year!.includes(vehicle.year),
       );
     }
 
@@ -60,29 +59,23 @@ export class MockVehicleRepository implements IVehicleRepository {
     return vehicle || null;
   }
 
-  async getVehicleCount(params: {
-    manufacturer?: string;
-    type?: string;
-    year?: number;
-  }): Promise<number> {
+  async getVehicleCount(params: VehicleCountParam): Promise<number> {
     let filteredVehicles = [...mockVehicles];
 
     // Filtering
-    if (params.manufacturer) {
+    if (params.manufacturer && params.manufacturer.length > 0) {
       filteredVehicles = filteredVehicles.filter((vehicle) =>
-        vehicle.manufacturer
-          .toLowerCase()
-          .includes(params.manufacturer!.toLowerCase()),
+        params.manufacturer!.includes(vehicle.manufacturer),
       );
     }
-    if (params.type) {
-      filteredVehicles = filteredVehicles.filter(
-        (vehicle) => vehicle.type.toLowerCase() === params.type!.toLowerCase(),
+    if (params.type && params.type.length > 0) {
+      filteredVehicles = filteredVehicles.filter((vehicle) =>
+        params.type!.includes(vehicle.type),
       );
     }
-    if (params.year) {
-      filteredVehicles = filteredVehicles.filter(
-        (vehicle) => vehicle.year === params.year,
+    if (params.year && params.year.length > 0) {
+      filteredVehicles = filteredVehicles.filter((vehicle) =>
+        params.year!.includes(vehicle.year),
       );
     }
 

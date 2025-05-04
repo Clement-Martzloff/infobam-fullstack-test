@@ -24,9 +24,9 @@ export class GetVehicleCountUseCase {
   constructor(private repository: IVehicleRepository) {}
 
   async execute(params: {
-    manufacturer?: string;
-    type?: string;
-    year?: number;
+    manufacturer?: string[] | null;
+    type?: string[] | null;
+    year?: number[] | null;
   }): Promise<number> {
     return this.repository.getVehicleCount(params);
   }

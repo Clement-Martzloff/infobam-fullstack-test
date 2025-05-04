@@ -37,9 +37,9 @@ export default function SortSelectorClient() {
 
   return (
     <FilterSelector
-      filterName="sort" // Unique name for this selector
+      filterName="sort"
       label="Sort by"
-      options={sortOptions.map((option) => option.label)} // Use labels as options
+      options={sortOptions.map((option) => option.label)}
       selectedValue={selectedValue}
       onValueChange={handleValueChange}
     />

@@ -15,7 +15,5 @@ export default async function PaginationControlsServer({
 
   const total = result.data ?? 0;
 
-  // PaginationControls is a client component, it will handle page/limit state via usePaginationQuery
-  // and receive the total count from the server component.
   return <PaginationControlsClient total={total} />;
 }

@@ -7,7 +7,7 @@ export interface IVehicleFilterRepository {
 }
 
 export interface VehicleFilterParam {
-  manufacturer?: string;
-  type?: string;
-  year?: number;
+  manufacturer?: string[];
+  type?: string[];
+  year?: number[];
 }

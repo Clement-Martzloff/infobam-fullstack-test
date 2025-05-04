@@ -7,17 +7,17 @@ export interface IVehicleRepository {
 }
 
 export interface VehicleSearchParam {
-  page?: number;
-  limit?: number;
-  manufacturer?: string;
-  type?: string;
-  year?: number;
-  sortBy?: "price" | "year";
-  sortOrder?: "asc" | "desc";
+  page: number;
+  limit: number;
+  manufacturer?: string[] | null;
+  type?: string[] | null;
+  year?: number[] | null;
+  sortBy?: "price" | "year" | null;
+  sortOrder?: "asc" | "desc" | null;
 }
 
 export interface VehicleCountParam {
-  manufacturer?: string;
-  type?: string;
-  year?: number;
+  manufacturer?: string[] | null;
+  type?: string[] | null;
+  year?: number[] | null;
 }
