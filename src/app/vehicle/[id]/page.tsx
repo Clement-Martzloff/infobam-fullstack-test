@@ -10,12 +10,14 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
+interface VehicleDetailPageProps {
+  params: Promise<{ id: string }>;
+}
+
 export default async function VehicleDetailPage({
   params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = params;
+}: VehicleDetailPageProps) {
+  const { id } = await params;
   const { data: vehicle, error } = await getVehicleById(id);
 
   if (error) {
