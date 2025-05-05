@@ -1,6 +1,6 @@
 import { ParsedVehicleSearchParams } from "@/infrastructure/nextjs/vehicleSearchParamsLoader";
 import { searchVehicules } from "@/infrastructure/nextjs/vehicleServerFunctions";
-import VehicleListGridClient from "@/src/app/components/VehicleListGrid/VehicleListGridClient";
+import VehicleListGrid from "@/src/app/components/VehicleListGrid/VehicleListGrid";
 
 interface VehicleListServerProps {
   searchParams: ParsedVehicleSearchParams;
@@ -22,5 +22,5 @@ export default async function VehicleListGridServer({
 
   const vehicles = vehiclesData || [];
 
-  return <VehicleListGridClient vehicles={vehicles} />;
+  return <VehicleListGrid vehicles={vehicles} />;
 }

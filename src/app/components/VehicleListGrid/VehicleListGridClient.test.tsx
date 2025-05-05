@@ -6,7 +6,7 @@ import { Vehicle, VehicleType } from "@/core/domain/entities/vehicle";
 import VehicleItem from "@/src/app/components/VehicleListGrid/VehicleItem";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import VehicleListGridClient from "./VehicleListGridClient";
+import VehicleListGridClient from "./VehicleListGrid";
 
 // Mock the VehicleItem component to check its props
 jest.mock("@/src/app/components/VehicleListGrid/VehicleItem", () => {

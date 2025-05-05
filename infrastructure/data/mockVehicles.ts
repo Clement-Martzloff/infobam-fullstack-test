@@ -1,5 +1,18 @@
 import { FuelType, Vehicle, VehicleType } from "@/core/domain/entities/vehicle";
 
+const dummyCarImages = [
+  "/dummy-car-1.jpg",
+  "/dummy-car-2.jpg",
+  "/dummy-car-3.jpg",
+  "/dummy-car-4.jpg",
+  "/dummy-car-5.jpg",
+];
+
+const getRandomImage = () => {
+  const randomIndex = Math.floor(Math.random() * dummyCarImages.length);
+  return dummyCarImages[randomIndex];
+};
+
 export const mockVehicles: Vehicle[] = [
   {
     id: "1",
@@ -12,7 +25,7 @@ export const mockVehicles: Vehicle[] = [
     transmission: "Automatic",
     mileage: 5000,
     features: ["Autopilot", "Panoramic Roof", "Heated Seats"],
-    images: ["/images/tesla_model3_1.jpg", "/images/tesla_model3_2.jpg"],
+    images: [getRandomImage()],
     description: "A great electric car with advanced features.",
     createdAt: new Date("2023-01-15T10:00:00Z"),
     updatedAt: new Date("2023-01-15T10:00:00Z"),
@@ -28,7 +41,7 @@ export const mockVehicles: Vehicle[] = [
     transmission: "Automatic",
     mileage: 10000,
     features: ["Leather Seats", "Navigation", "Backup Camera"],
-    images: ["/images/bmw_x5_1.jpg", "/images/bmw_x5_2.jpg"],
+    images: [getRandomImage()],
     description: "A luxurious and spacious SUV.",
     createdAt: new Date("2022-05-20T12:00:00Z"),
     updatedAt: new Date("2022-05-20T12:00:00Z"),
@@ -44,7 +57,7 @@ export const mockVehicles: Vehicle[] = [
     transmission: "Automatic",
     mileage: 1000,
     features: ["Adaptive Cruise Control", "Lane Keeping Assist"],
-    images: ["/images/toyota_camry_1.jpg", "/images/toyota_camry_2.jpg"],
+    images: [getRandomImage()],
     description: "A reliable and fuel-efficient sedan.",
     createdAt: new Date("2024-02-10T09:00:00Z"),
     updatedAt: new Date("2024-02-10T09:00:00Z"),
@@ -60,7 +73,7 @@ export const mockVehicles: Vehicle[] = [
     transmission: "Automatic",
     mileage: 6000,
     features: ["Autopilot", "Heated Seats"],
-    images: ["/images/tesla_modely_1.jpg", "/images/tesla_modely_2.jpg"],
+    images: [getRandomImage()],
     description: "A versatile electric SUV.",
     createdAt: new Date("2023-02-20T11:00:00Z"),
     updatedAt: new Date("2023-02-20T11:00:00Z"),
@@ -76,7 +89,7 @@ export const mockVehicles: Vehicle[] = [
     transmission: "Automatic",
     mileage: 2000,
     features: ["Sport Package", "Sunroof"],
-    images: ["/images/bmw_3series_1.jpg", "/images/bmw_3series_2.jpg"],
+    images: [getRandomImage()],
     description: "A sporty and elegant sedan.",
     createdAt: new Date("2024-01-05T10:00:00Z"),
     updatedAt: new Date("2024-01-05T10:00:00Z"),
@@ -92,7 +105,7 @@ export const mockVehicles: Vehicle[] = [
     transmission: "Automatic",
     mileage: 7000,
     features: ["All-Wheel Drive", "Backup Camera"],
-    images: ["/images/toyota_rav4_1.jpg", "/images/toyota_rav4_2.jpg"],
+    images: [getRandomImage()],
     description: "A popular and reliable hybrid SUV.",
     createdAt: new Date("2023-03-10T14:00:00Z"),
     updatedAt: new Date("2023-03-10T14:00:00Z"),
@@ -108,7 +121,7 @@ export const mockVehicles: Vehicle[] = [
     transmission: "Automatic",
     mileage: 15000,
     features: ["Long Range", "Premium Interior"],
-    images: ["/images/tesla_models_1.jpg", "/images/tesla_models_2.jpg"],
+    images: [getRandomImage()],
     description: "A high-performance electric sedan.",
     createdAt: new Date("2022-04-01T09:00:00Z"),
     updatedAt: new Date("2022-04-01T09:00:00Z"),
@@ -124,7 +137,7 @@ export const mockVehicles: Vehicle[] = [
     transmission: "Automatic",
     mileage: 4000,
     features: ["Modern Design", "Advanced Technology"],
-    images: ["/images/bmw_ix_1.jpg", "/images/bmw_ix_2.jpg"],
+    images: [getRandomImage()],
     description: "A futuristic electric SUV.",
     createdAt: new Date("2023-05-01T12:00:00Z"),
     updatedAt: new Date("2023-05-01T12:00:00Z"),
@@ -140,7 +153,7 @@ export const mockVehicles: Vehicle[] = [
     transmission: "Automatic",
     mileage: 500,
     features: ["Fuel Efficient", "Reliable"],
-    images: ["/images/toyota_corolla_1.jpg", "/images/toyota_corolla_2.jpg"],
+    images: [getRandomImage()],
     description: "A dependable compact sedan.",
     createdAt: new Date("2024-03-20T10:00:00Z"),
     updatedAt: new Date("2024-03-20T10:00:00Z"),
@@ -156,10 +169,7 @@ export const mockVehicles: Vehicle[] = [
     transmission: "Automatic",
     mileage: 100,
     features: ["Unique Design", "Durable Exoskeleton"],
-    images: [
-      "/images/tesla_cybertruck_1.jpg",
-      "/images/tesla_cybertruck_2.jpg",
-    ],
+    images: [getRandomImage()],
     description: "A futuristic electric truck.",
     createdAt: new Date("2024-04-10T15:00:00Z"),
     updatedAt: new Date("2024-04-10T15:00:00Z"),

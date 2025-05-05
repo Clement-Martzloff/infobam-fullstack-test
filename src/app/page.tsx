@@ -1,12 +1,13 @@
-import { vehicleSearchParamsLoader } from "@/infrastructure/nextjs/vehicleSearchParamsLoader";
-import PaginationControlsServer from "@/src/app/components/PaginationControls/PaginationControlsServer"; // Import the new server component
-import SortSelectorClient from "@/src/app/components/SortSelectors/SortSelectorClient"; // Import SortSelectorClient
-import VehicleCountTextServer from "@/src/app/components/VehicleCountTextServer";
 import { getFilterValues } from "@/infrastructure/nextjs/vehicleFilterServerFunctions";
-import VehicleFiltersDialog from "@/src/app/components/VehicleFiltersDialog";
-import VehicleListGridServer from "@/src/app/components/VehicleListGrid/VehicleListGridServer"; // Import VehicleListGridServer
+import { vehicleSearchParamsLoader } from "@/infrastructure/nextjs/vehicleSearchParamsLoader";
+import PaginationControlsServer from "@/src/app/components/PaginationControl/PaginationControlServer";
+import SortSelectorClient from "@/src/app/components/SortSelector/SortSelectorClient";
+import VehicleFilterDialog from "@/src/app/components/VehicleFiltersDialog/VehicleFiltersDialog";
+import VehicleListGridServer from "@/src/app/components/VehicleListGrid/VehicleListGridServer";
 import type { SearchParams } from "nuqs/server";
 import { Suspense } from "react";
+
+export const dynamic = "force-dynamic";
 
 interface HomePageProps {
   searchParams: Promise<SearchParams>;
@@ -19,18 +20,18 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   );
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="mb-4 text-2xl font-bold">Vehicle Listing</h1>
+    <div className="container mx-auto p-4 lg:max-w-5xl">
+      <h1 className="mb-4 text-2xl leading-tight font-semibold">
+        Vehicle Listing
+      </h1>
+      <Suspense fallback={<div>Loading pagination...</div>}>
+        <PaginationControlsServer searchParams={parsedSearchParams} />
+      </Suspense>
       <div className="mb-4 flex items-center justify-between">
-        <VehicleFiltersDialog
-          vehicleCountText={
-            <Suspense fallback={<div>Loading vehicle count...</div>}>
-              <VehicleCountTextServer searchParams={parsedSearchParams} />
-            </Suspense>
-          }
+        <VehicleFilterDialog
           searchParams={parsedSearchParams}
           filterOptions={filterOptions!}
-        ></VehicleFiltersDialog>
+        ></VehicleFilterDialog>
         <SortSelectorClient />
       </div>
       <Suspense fallback={<div>Loading vehicles...</div>}>

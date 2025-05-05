@@ -11,6 +11,6 @@ export class GetFilterValuesUseCase {
     type: string[];
     year: number[];
   }> {
-    return this.repository.getFilterValues(params);
+    return await this.repository.getFilterValues(params);
   }
 }

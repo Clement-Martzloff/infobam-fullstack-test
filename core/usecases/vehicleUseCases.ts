@@ -8,7 +8,7 @@ export class SearchVehiclesUseCase {
   constructor(private repository: IVehicleRepository) {}
 
   async execute(params: VehicleSearchParam): Promise<Vehicle[]> {
-    return this.repository.searchVehicles(params);
+    return await this.repository.searchVehicles(params);
   }
 }
 
@@ -16,7 +16,7 @@ export class GetVehicleByIdUseCase {
   constructor(private repository: IVehicleRepository) {}
 
   async execute(id: string): Promise<Vehicle | null> {
-    return this.repository.getVehicleById(id);
+    return await this.repository.getVehicleById(id);
   }
 }
 
@@ -28,6 +28,6 @@ export class GetVehicleCountUseCase {
     type?: string[] | null;
     year?: number[] | null;
   }): Promise<number> {
-    return this.repository.getVehicleCount(params);
+    return await this.repository.getVehicleCount(params);
   }
 }

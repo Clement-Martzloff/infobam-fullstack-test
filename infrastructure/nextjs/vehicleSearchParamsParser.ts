@@ -1,13 +1,13 @@
 import {
+  parseAsArrayOf,
   parseAsInteger,
   parseAsString,
   parseAsStringLiteral,
-  parseAsArrayOf,
 } from "nuqs/server";
 
 export const vehicleSearchParamsParser = {
   page: parseAsInteger.withDefault(1),
-  limit: parseAsInteger.withDefault(5),
+  limit: parseAsInteger.withDefault(6),
   manufacturer: parseAsArrayOf(parseAsString),
   type: parseAsArrayOf(parseAsString),
   year: parseAsArrayOf(parseAsInteger),

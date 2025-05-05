@@ -2,10 +2,10 @@
  * @jest-environment jsdom
  */
 
-import "@testing-library/jest-dom";
-import { render, screen, fireEvent } from "@testing-library/react";
-import PaginationControlsClient from "./PaginationControlsClient";
 import { usePaginationQuery } from "@/src/app/hooks/usePaginationQuery";
+import "@testing-library/jest-dom";
+import { fireEvent, render, screen } from "@testing-library/react";
+import PaginationControlsClient from "./PaginationControlClient";
 
 // Mock the usePaginationQuery hook
 jest.mock("@/src/app/hooks/usePaginationQuery", () => ({
