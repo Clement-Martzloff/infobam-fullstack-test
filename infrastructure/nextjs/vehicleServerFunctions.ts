@@ -14,19 +14,18 @@ const getVehicleCountUseCase = new GetVehicleCountUseCase(
 );
 
 export async function searchVehicules(params: {
-  page?: number | null;
-  limit?: number | null;
-  manufacturer?: string | null;
-  type?: string | null;
-  year?: number | null;
-  sortBy?: "price" | "year" | null;
-  sortOrder?: "asc" | "desc" | null;
+  page: number;
+  limit: number;
+  manufacturer: string[] | null;
+  type: string[] | null;
+  year: number[] | null;
+  sortBy: "price" | "year" | null;
+  sortOrder: "asc" | "desc" | null;
 }) {
   try {
-    // Convert nulls to undefined for the use case if it expects undefined
     const cleanedParams = {
-      page: params.page ?? undefined,
-      limit: params.limit ?? undefined,
+      page: params.page,
+      limit: params.limit,
       manufacturer: params.manufacturer ?? undefined,
       type: params.type ?? undefined,
       year: params.year ?? undefined,
@@ -54,9 +53,9 @@ export async function getVehicleById(id: string) {
 }
 
 export async function getVehicleCount(params: {
-  manufacturer?: string | null;
-  type?: string | null;
-  year?: number | null;
+  manufacturer: string[] | null;
+  type: string[] | null;
+  year: number[] | null;
 }) {
   try {
     const cleanedParams = {

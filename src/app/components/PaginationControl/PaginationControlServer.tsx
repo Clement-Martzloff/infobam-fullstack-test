@@ -1,12 +1,14 @@
 import type { ParsedVehicleSearchParams } from "@/infrastructure/nextjs/vehicleSearchParamsLoader";
 import { getVehicleCount } from "@/infrastructure/nextjs/vehicleServerFunctions";
-import PaginationControlsClient from "@/src/app/components/PaginationControls/PaginationControlsClient";
+import PaginationControlClient from "@/src/app/components/PaginationControl/PaginationControlClient";
 
-export default async function PaginationControlsServer({
-  searchParams,
-}: {
+interface PaginationControlServer {
   searchParams: ParsedVehicleSearchParams;
-}) {
+}
+
+export default async function PaginationControlServer({
+  searchParams,
+}: PaginationControlServer) {
   const result = await getVehicleCount({
     manufacturer: searchParams.filters.manufacturer,
     type: searchParams.filters.type,
@@ -15,7 +17,5 @@ export default async function PaginationControlsServer({
 
   const total = result.data ?? 0;
 
-  // PaginationControls is a client component, it will handle page/limit state via usePaginationQuery
-  // and receive the total count from the server component.
-  return <PaginationControlsClient total={total} />;
+  return <PaginationControlClient total={total} />;
 }

@@ -5,7 +5,7 @@ interface VehicleListGridClientProps {
   vehicles: Vehicle[];
 }
 
-export default function VehicleListGridClient({
+export default function VehicleListGrid({
   vehicles,
 }: VehicleListGridClientProps) {
   return (

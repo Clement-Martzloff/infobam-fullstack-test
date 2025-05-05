@@ -1,10 +1,10 @@
+import { Vehicle, VehicleType } from "@/core/domain/entities/vehicle";
 import { IVehicleRepository } from "@/core/domain/interfaces/IVehicleRepository";
 import {
-  SearchVehiclesUseCase,
   GetVehicleByIdUseCase,
   GetVehicleCountUseCase,
+  SearchVehiclesUseCase,
 } from "./vehicleUseCases";
-import { Vehicle, VehicleType } from "@/core/domain/entities/vehicle";
 
 // Mock the repository
 const mockVehicleRepository: IVehicleRepository = {
@@ -42,7 +42,7 @@ describe("SearchVehiclesUseCase", () => {
       mockVehicles,
     );
 
-    const params = { page: 1, limit: 10, manufacturer: "Toyota" };
+    const params = { page: 1, limit: 6, manufacturer: ["Toyota"] };
     const result = await useCase.execute(params);
 
     expect(mockVehicleRepository.searchVehicles).toHaveBeenCalledWith(params);
@@ -57,9 +57,12 @@ describe("SearchVehiclesUseCase", () => {
       mockVehicles,
     );
 
-    const result = await useCase.execute({});
+    const result = await useCase.execute({ page: 1, limit: 6 });
 
-    expect(mockVehicleRepository.searchVehicles).toHaveBeenCalledWith({});
+    expect(mockVehicleRepository.searchVehicles).toHaveBeenCalledWith({
+      page: 1,
+      limit: 6,
+    });
     expect(result).toEqual(mockVehicles);
   });
 });
@@ -124,7 +127,7 @@ describe("GetVehicleCountUseCase", () => {
       mockCount,
     );
 
-    const params = { manufacturer: "Toyota", type: "SEDAN", year: 2020 };
+    const params = { manufacturer: ["Toyota"], type: ["SEDAN"], year: [2020] };
     const result = await useCase.execute(params);
 
     expect(mockVehicleRepository.getVehicleCount).toHaveBeenCalledWith(params);

@@ -10,21 +10,22 @@ export class MockVehicleFilterRepository implements IVehicleFilterRepository {
     type: string[];
     year: number[];
   }> {
+    await new Promise((resolve) => setTimeout(resolve, 500)); // Add 1-second delay
     let filteredVehicles = mockVehicles;
 
-    if (params?.manufacturer) {
-      filteredVehicles = filteredVehicles.filter(
-        (vehicle) => vehicle.manufacturer === params.manufacturer,
+    if (params?.manufacturer && params.manufacturer.length > 0) {
+      filteredVehicles = filteredVehicles.filter((vehicle) =>
+        params.manufacturer!.includes(vehicle.manufacturer),
       );
     }
-    if (params?.type) {
-      filteredVehicles = filteredVehicles.filter(
-        (vehicle) => vehicle.type === params.type,
+    if (params?.type && params.type.length > 0) {
+      filteredVehicles = filteredVehicles.filter((vehicle) =>
+        params.type!.includes(vehicle.type),
       );
     }
-    if (params?.year) {
-      filteredVehicles = filteredVehicles.filter(
-        (vehicle) => vehicle.year === params.year,
+    if (params?.year && params.year.length > 0) {
+      filteredVehicles = filteredVehicles.filter((vehicle) =>
+        params.year!.includes(vehicle.year),
       );
     }
 

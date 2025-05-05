@@ -8,9 +8,9 @@ const getFilterValuesUseCase = new GetFilterValuesUseCase(
 );
 
 export async function getFilterValues(params: {
-  manufacturer?: string | null;
-  type?: string | null;
-  year?: number | null;
+  manufacturer?: string[] | null;
+  type?: string[] | null;
+  year?: number[] | null;
 }) {
   try {
     const cleanedParams = {

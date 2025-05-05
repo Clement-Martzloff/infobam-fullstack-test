@@ -23,7 +23,7 @@ describe("GetFilterValuesUseCase", () => {
       mockVehicleFilterRepository.getFilterValues as jest.Mock
     ).mockResolvedValue(mockFilterValues);
 
-    const params = { manufacturer: "Toyota" };
+    const params = { manufacturer: ["Toyota"] };
     const result = await useCase.execute(params);
 
     expect(mockVehicleFilterRepository.getFilterValues).toHaveBeenCalledWith(

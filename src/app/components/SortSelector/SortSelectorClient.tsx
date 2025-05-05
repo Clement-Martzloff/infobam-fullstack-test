@@ -1,6 +1,6 @@
 "use client";
 
-import FilterSelector from "@/src/app/components/FilterSelectors/FilterSelector";
+import OptionsSelector from "@/src/app/components/SortSelector/OptionsSelector";
 import { useSortQuery } from "@/src/app/hooks/useSortQuery";
 
 interface SortOption {
@@ -18,15 +18,10 @@ const sortOptions: SortOption[] = [
 
 export default function SortSelectorClient() {
   const { sortBy, sortOrder, setSortBy, setSortOrder } = useSortQuery();
-
-  // Determine the currently selected label based on sortBy and sortOrder
   const currentSortOption = sortOptions.find(
     (option) => option.sortBy === sortBy && option.sortOrder === sortOrder,
   );
-  // With middleware, currentSortOption should always be defined on the root page.
-  // Add a fallback for TypeScript's static analysis.
   const selectedValue = currentSortOption?.label || sortOptions[0].label;
-
   const handleValueChange = (value: string) => {
     const selectedOption = sortOptions.find((option) => option.label === value);
     if (selectedOption) {
@@ -36,10 +31,10 @@ export default function SortSelectorClient() {
   };
 
   return (
-    <FilterSelector
-      filterName="sort" // Unique name for this selector
+    <OptionsSelector
+      filterName="sort"
       label="Sort by"
-      options={sortOptions.map((option) => option.label)} // Use labels as options
+      options={sortOptions.map((option) => option.label)}
       selectedValue={selectedValue}
       onValueChange={handleValueChange}
     />
