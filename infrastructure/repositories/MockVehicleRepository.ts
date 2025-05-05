@@ -8,7 +8,7 @@ import { mockVehicles } from "@/infrastructure/data/mockVehicles";
 
 export class MockVehicleRepository implements IVehicleRepository {
   async searchVehicles(params: VehicleSearchParam): Promise<Vehicle[]> {
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // Add 1-second delay
+    await new Promise((resolve) => setTimeout(resolve, 500)); // Add 1-second delay
     let filteredVehicles = [...mockVehicles];
 
     // Filtering
@@ -56,13 +56,13 @@ export class MockVehicleRepository implements IVehicleRepository {
   }
 
   async getVehicleById(id: string): Promise<Vehicle | null> {
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // Add 1-second delay
+    await new Promise((resolve) => setTimeout(resolve, 500)); // Add 1-second delay
     const vehicle = mockVehicles.find((v) => v.id === id);
     return vehicle || null;
   }
 
   async getVehicleCount(params: VehicleCountParam): Promise<number> {
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // Add 1-second delay
+    await new Promise((resolve) => setTimeout(resolve, 500)); // Add 1-second delay
     let filteredVehicles = [...mockVehicles];
 
     // Filtering

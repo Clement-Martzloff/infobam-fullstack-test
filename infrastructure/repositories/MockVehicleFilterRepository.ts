@@ -10,7 +10,7 @@ export class MockVehicleFilterRepository implements IVehicleFilterRepository {
     type: string[];
     year: number[];
   }> {
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // Add 1-second delay
+    await new Promise((resolve) => setTimeout(resolve, 500)); // Add 1-second delay
     let filteredVehicles = mockVehicles;
 
     if (params?.manufacturer && params.manufacturer.length > 0) {

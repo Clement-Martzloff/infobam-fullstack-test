@@ -3,6 +3,7 @@
 import { ParsedVehicleSearchParams } from "@/infrastructure/nextjs/vehicleSearchParamsLoader";
 import FilterCheckboxOptions from "@/src/app/components/VehicleFiltersDialog/FilterCheckboxOptions";
 import { useFiltersQuery } from "@/src/app/hooks/useFiltersQuery";
+import { usePaginationQuery } from "@/src/app/hooks/usePaginationQuery";
 import { Button } from "@/src/components/ui/button";
 import {
   Dialog,
@@ -42,6 +43,7 @@ export default function VehicleFiltersDialog({
 }: VehicleFiltersDialogProps) {
   const [isFiltersDialogOpen, setIsDialogOpen] = useState(false);
   const { setManufacturer, setType, setYear } = useFiltersQuery();
+  const { setPage } = usePaginationQuery();
   const form = useForm<FilterFormValues>({
     resolver: zodResolver(filterFormSchema),
     defaultValues: {
@@ -64,17 +66,19 @@ export default function VehicleFiltersDialog({
       setManufacturer(values.manufacturer || null);
       setType(values.type || null);
       setYear(values.year || null);
+      setPage(1); // Reset pagination to page 1
       setIsDialogOpen(false);
     },
-    [setManufacturer, setType, setYear],
+    [setManufacturer, setType, setYear, setPage],
   );
   const clearFilters = useCallback(() => {
     form.reset({ manufacturer: null, type: null, year: null });
     setManufacturer(null);
     setType(null);
     setYear(null);
+    setPage(1); // Reset pagination to page 1
     setIsDialogOpen(false);
-  }, [setManufacturer, setType, setYear, form]);
+  }, [setManufacturer, setType, setYear, setPage, form]);
 
   return (
     <Dialog open={isFiltersDialogOpen} onOpenChange={setIsDialogOpen}>
