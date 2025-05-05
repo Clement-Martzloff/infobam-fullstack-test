@@ -11,6 +11,7 @@ import {
 } from "@/src/components/ui/card";
 import { Search } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface VehicleItemProps {
   vehicle: Vehicle;
@@ -46,9 +47,11 @@ export default function VehicleItem({ vehicle }: VehicleItemProps) {
         <Badge>{vehicle.type}</Badge>
       </CardContent>
       <CardFooter className="mt-2">
-        <Button className="w-full hover:cursor-pointer" variant="secondary">
-          <Search /> More Details
-        </Button>
+        <Link href={`/vehicle/${vehicle.id}`} className="w-full">
+          <Button className="w-full hover:cursor-pointer" variant="secondary">
+            <Search /> More Details
+          </Button>
+        </Link>
       </CardFooter>
     </Card>
   );
